@@ -121,15 +121,17 @@ export default class JMuxmer extends Event {
         for (nalu of nalus) {
             naluObj = new NALU(nalu);
             units.push(naluObj);
-            if (naluObj.type() === NALU.IDR || naluObj.type() === NALU.NDR) {
-                samples.push({units});
-                units = [];
-                if (this.options.clearBuffer) {
-                    if (naluObj.type() === NALU.IDR) {
-                        numberOfFrames.push(this.frameCounter);
-                    }
-                    this.frameCounter++;
+        }
+
+        samples.push({units});
+        units = [];
+
+        if (naluObj.type() === NALU.IDR || naluObj.type() === NALU.NDR) {
+            if (this.options.clearBuffer) {
+                if (naluObj.type() === NALU.IDR) {
+                    numberOfFrames.push(this.frameCounter);
                 }
+                this.frameCounter++;
             }
         }
         
